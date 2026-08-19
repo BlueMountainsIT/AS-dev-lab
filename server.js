@@ -99,7 +99,7 @@ app.post('/api/notes', requiresAuth(), async (req, res) => {
 
   if (!client) {
     return res.status(503).json({
-      error: error || 'Database is not connected. Notes cannot be saved yet.',
+      error: error || 'Database is not connected. Notes cannot be saved yet',
     });
   }
 
