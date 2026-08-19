@@ -15,14 +15,14 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Load deployment secrets
-        uses: 1password/load-secrets-action@v5
-        with:
-          export-env: true
-        env:
-          OP_WORKLOAD_ID: "XYFHBGVFQZGSPNWSFOS4ITNXOI"
-          OP_ENVIRONMENT_ID: "2rtmglocixxqnxepxw4tbauxx4"
-          OP_INTEGRATION_KEY: ${{ secrets.OP_INTEGRATION_KEY }}
+      - - name: Load secrets from 1Password
+  uses: 1Password/load-secrets-action@v5beta
+  with:
+    export-env: true
+  env:
+    OP_WORKLOAD_ID: "XYFHBGVFQZGSPNWSFOS4ITNXOI"
+    OP_ENVIRONMENT_ID: "2rtmglocixxqnxepxw4tbauxx4"
+    OP_INTEGRATION_KEY: ${{ secrets.OP_INTEGRATION_KEY }}
 
       - name: Install dependencies
         run: npm ci
