@@ -2,27 +2,26 @@ name: Deploy to Vercel
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
-
     steps:
-      - name: Checkout code
+      - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Load secrets from 1Password
+      - name: Load deployment secrets
         uses: 1password/load-secrets-action@v5
         with:
           export-env: true
         env:
-          OP_WORKLOAD_ID: ${{ vars.OP_WORKLOAD_ID }}
-          OP_ENVIRONMENT_ID: ${{ vars.OP_ENVIRONMENT_ID }}
+          OP_WORKLOAD_ID: "XYFHBGVFQZGSPNWSFOS4ITNXOI"
+          OP_ENVIRONMENT_ID: "2rtmglocixxqnxepxw4tbauxx4"
           OP_INTEGRATION_KEY: ${{ secrets.OP_INTEGRATION_KEY }}
 
       - name: Install dependencies
@@ -31,39 +30,11 @@ jobs:
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
 
-      - name: Sync app secrets to Vercel
-        env:
-          VERCEL_ORG_ID: ${{ env.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ env.VERCEL_PROJECT_ID }}
-        run: |
-          sync_env() {
-            printf '%s' "$2" | vercel env add "$1" production \
-              --token="$VERCEL_TOKEN" \
-              --force
-          }
-
-          sync_env SUPABASE_URL "$SUPABASE_URL"
-          sync_env SUPABASE_ANON_KEY "$SUPABASE_ANON_KEY"
-          sync_env AUTH0_SECRET "$AUTH0_SECRET"
-          sync_env AUTH0_BASE_URL "$AUTH0_BASE_URL"
-          sync_env AUTH0_ISSUER_BASE_URL "$AUTH0_ISSUER_BASE_URL"
-          sync_env AUTH0_CLIENT_ID "$AUTH0_CLIENT_ID"
-          sync_env AUTH0_CLIENT_SECRET "$AUTH0_CLIENT_SECRET"
-
       - name: Pull Vercel project settings
         run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
-        env:
-          VERCEL_ORG_ID: ${{ env.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ env.VERCEL_PROJECT_ID }}
 
-      - name: Build for production
+      - name: Build for Vercel
         run: vercel build --prod --token="$VERCEL_TOKEN"
-        env:
-          VERCEL_ORG_ID: ${{ env.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ env.VERCEL_PROJECT_ID }}
 
       - name: Deploy to Vercel
         run: vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
-        env:
-          VERCEL_ORG_ID: ${{ env.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ env.VERCEL_PROJECT_ID }}
