@@ -119,3 +119,5 @@ app.post('/api/notes', requiresAuth(), async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Dev Lab is running at http://localhost:${PORT}`);
 });
+
+module.exports = app;
