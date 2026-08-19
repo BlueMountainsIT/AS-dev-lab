@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dev Lab · 1Password</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="ambiance" aria-hidden="true">
+      <div class="torch torch--left"></div>
+      <div class="torch torch--right"></div>
+    </div>
+
+    <header class="header">
+      <div class="header-brand">
+        <div class="brand-seal" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="1.5" />
+            <circle cx="24" cy="19" r="5.5" fill="currentColor" />
+            <path d="M18.5 25h11v10.5a2.5 2.5 0 0 1-2.5 2.5h-6a2.5 2.5 0 0 1-2.5-2.5V25z" fill="currentColor" />
+          </svg>
+        </div>
+        <div class="header-inner">
+          <p class="brand-eyebrow">1Password presents</p>
+          <h1>Dev Lab</h1>
+          <p class="tagline">A royal scriptorium for builders who keep their secrets under lock and key.</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div id="auth-area" class="auth-area">
+          <a id="login-link" class="auth-link auth-link--login" href="/login">Enter the gate</a>
+          <div id="user-area" class="user-area" hidden>
+            <span id="user-greeting" class="user-greeting"></span>
+            <a class="auth-link auth-link--logout" href="/logout">Leave</a>
+          </div>
+        </div>
+        <div id="status-badge" class="status-badge status-badge--loading" aria-live="polite">
+          Consulting the archive…
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="card scroll-card">
+        <h2><span class="ornament">✦</span> Compose a Missive <span class="ornament">✦</span></h2>
+        <p id="auth-notice" class="auth-notice" hidden>
+          Thou must <a href="/login">enter the gate</a> before affixing a missive to the wall.
+        </p>
+        <form id="note-form">
+          <label for="name">Thy name</label>
+          <input id="name" name="name" type="text" maxlength="80" placeholder="Sir Aldric of the Terminal" required />
+
+          <label for="message">Thy message</label>
+          <textarea
+            id="message"
+            name="message"
+            rows="4"
+            maxlength="500"
+            placeholder="Today I learned how a web app speaks to a distant archive…"
+            required
+          ></textarea>
+
+          <button type="submit" id="submit-btn">Affix to the wall</button>
+          <p id="form-error" class="form-error" hidden></p>
+        </form>
+      </section>
+
+      <section class="card scroll-card scroll-card--delay">
+        <h2><span class="ornament">✦</span> The Common Wall <span class="ornament">✦</span></h2>
+        <p id="notes-empty" class="notes-empty">The wall stands bare. Be the first to post a missive.</p>
+        <ul id="notes-list" class="notes-list"></ul>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>
+        <span class="footer-mark">⚜</span>
+        Session 3 — only authenticated travelers may post missives.
+        Auth0 credentials dwell in thy <strong>1Password Environment</strong>, never etched into the source.
+        <span class="footer-mark">⚜</span>
+      </p>
+    </footer>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
