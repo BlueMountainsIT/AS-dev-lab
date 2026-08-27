@@ -9,6 +9,22 @@ const userArea = document.getElementById('user-area');
 const userGreeting = document.getElementById('user-greeting');
 const authNotice = document.getElementById('auth-notice');
 const nameInput = document.getElementById('name');
+const spriteKey = document.getElementById('sprite-key');
+const spriteScribe = document.getElementById('sprite-scribe');
+
+function setSpriteKeyState(connected) {
+  if (!spriteKey) return;
+  spriteKey.classList.remove('sprite--linked', 'sprite--sealed');
+  spriteKey.classList.add(connected ? 'sprite--linked' : 'sprite--sealed');
+}
+
+function playScribeDispatch() {
+  if (!spriteScribe) return;
+  spriteScribe.classList.remove('sprite--dispatch');
+  void spriteScribe.offsetWidth;
+  spriteScribe.classList.add('sprite--dispatch');
+  window.setTimeout(() => spriteScribe.classList.remove('sprite--dispatch'), 700);
+}
 
 function stampBadge() {
   statusBadge.classList.remove('status-badge--stamp');
@@ -23,6 +39,7 @@ function setBadge(connected, message) {
   }`;
   statusBadge.title = message || '';
   stampBadge();
+  setSpriteKeyState(connected);
 }
 
 function showFormError(message) {
@@ -132,6 +149,7 @@ noteForm.addEventListener('submit', async (event) => {
 
   submitBtn.disabled = true;
   submitBtn.classList.add('button--working');
+  playScribeDispatch();
   const originalLabel = submitBtn.textContent;
   submitBtn.textContent = 'Dispatching';
 

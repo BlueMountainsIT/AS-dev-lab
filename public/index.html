@@ -18,6 +18,12 @@
       <div class="torch torch--right"></div>
     </div>
 
+    <div class="sprite-layer" aria-hidden="true">
+      <div class="sprite sprite--mote sprite--mote-1"></div>
+      <div class="sprite sprite--mote sprite--mote-2"></div>
+      <div class="sprite sprite--mote sprite--mote-3"></div>
+    </div>
+
     <header class="header">
       <div class="header-brand">
         <div class="brand-seal" aria-hidden="true">
@@ -35,14 +41,45 @@
       </div>
       <div class="header-actions">
         <div id="auth-area" class="auth-area">
-          <a id="login-link" class="auth-link auth-link--login" href="/login">Enter the gate</a>
+          <div class="sprite-zone sprite-zone--gate">
+            <div id="sprite-guard" class="sprite sprite--guard">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                <path d="M32 8l8 6v8c0 8-4 14-8 18-4-4-8-10-8-18v-8l8-6z" fill="#8a7340" />
+                <circle cx="32" cy="24" r="6" fill="#e8dcc0" />
+                <rect x="26" y="30" width="12" height="18" rx="2" fill="#5c4f3a" />
+                <rect x="22" y="36" width="6" height="14" rx="1" fill="#8a7340" />
+                <rect x="36" y="36" width="6" height="14" rx="1" fill="#8a7340" />
+                <path class="sprite-guard-torch" d="M46 28c4 2 6 8 4 12-2 4-8 4-10 0" fill="#ffb347" />
+              </svg>
+            </div>
+            <a id="login-link" class="auth-link auth-link--login" href="/login">Enter the gate</a>
+          </div>
           <div id="user-area" class="user-area" hidden>
             <span id="user-greeting" class="user-greeting"></span>
-            <a class="auth-link auth-link--logout" href="/logout">Leave</a>
+            <div class="sprite-zone sprite-zone--gate">
+              <div id="sprite-guard-out" class="sprite sprite--guard sprite--guard-small">
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M32 8l8 6v8c0 8-4 14-8 18-4-4-8-10-8-18v-8l8-6z" fill="#8a7340" />
+                  <circle cx="32" cy="24" r="6" fill="#e8dcc0" />
+                  <rect x="26" y="30" width="12" height="18" rx="2" fill="#5c4f3a" />
+                </svg>
+              </div>
+              <a class="auth-link auth-link--logout" href="/logout">Leave</a>
+            </div>
           </div>
         </div>
-        <div id="status-badge" class="status-badge status-badge--loading" aria-live="polite">
-          Consulting the archive…
+        <div class="sprite-zone sprite-zone--badge">
+          <div id="sprite-key" class="sprite sprite--key">
+            <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="24" cy="18" r="7" fill="none" stroke="currentColor" stroke-width="2.5" />
+              <rect x="20" y="24" width="8" height="16" rx="2" fill="currentColor" />
+              <rect x="28" y="32" width="8" height="3" rx="1" fill="currentColor" />
+              <rect x="28" y="38" width="6" height="3" rx="1" fill="currentColor" />
+            </svg>
+          </div>
+          <div id="status-badge" class="status-badge status-badge--loading" aria-live="polite">
+            Consulting the archive…
+          </div>
         </div>
       </div>
     </header>
@@ -67,7 +104,18 @@
             required
           ></textarea>
 
-          <button type="submit" id="submit-btn">Affix to the wall</button>
+          <div class="sprite-zone sprite-zone--submit">
+            <div id="sprite-scribe" class="sprite sprite--scribe">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="32" cy="52" rx="18" ry="4" fill="rgba(44,36,22,0.15)" />
+                <path d="M18 46c6-2 12-2 18 0" stroke="#8a7340" stroke-width="2" fill="none" />
+                <rect x="24" y="38" width="16" height="8" rx="1" fill="#f3e9d2" stroke="#c4b896" />
+                <path class="sprite-quill" d="M38 14c8 10 6 22-2 28" stroke="#5c4f3a" stroke-width="2" fill="none" />
+                <path class="sprite-quill-tip" d="M36 40l4 4-2 2-4-4" fill="#145fe4" />
+              </svg>
+            </div>
+            <button type="submit" id="submit-btn">Affix to the wall</button>
+          </div>
           <p id="form-error" class="form-error" hidden></p>
         </form>
       </section>
