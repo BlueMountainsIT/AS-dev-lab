@@ -10,17 +10,40 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-app.use(
-  auth({
-    authRequired: false,
-    auth0Logout: true,
-    secret: process.env.AUTH0_SECRET,
-    baseURL: process.env.AUTH0_BASE_URL,
-    clientID: process.env.AUTH0_CLIENT_ID,
-    issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
-    clientSecret: process.env.AUTH0_CLIENT_SECRET,
-  })
-);
+function isAuthConfigured() {
+  return Boolean(
+    process.env.AUTH0_SECRET &&
+      process.env.AUTH0_BASE_URL &&
+      process.env.AUTH0_CLIENT_ID &&
+      process.env.AUTH0_ISSUER_BASE_URL &&
+      process.env.AUTH0_CLIENT_SECRET
+  );
+}
+
+if (isAuthConfigured()) {
+  app.use(
+    auth({
+      authRequired: false,
+      auth0Logout: true,
+      secret: process.env.AUTH0_SECRET,
+      baseURL: process.env.AUTH0_BASE_URL,
+      clientID: process.env.AUTH0_CLIENT_ID,
+      issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
+      clientSecret: process.env.AUTH0_CLIENT_SECRET,
+    })
+  );
+} else {
+  console.warn('Auth0 is not configured — the page will load, but login is disabled.');
+  app.get('/login', (_req, res) => res.redirect('/'));
+  app.get('/logout', (_req, res) => res.redirect('/'));
+}
+
+function requireLogin(req, res, next) {
+  if (!isAuthConfigured()) {
+    return res.status(503).json({ error: 'Auth0 is not configured. Login is unavailable.' });
+  }
+  return requiresAuth()(req, res, next);
+}
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -52,13 +75,14 @@ async function checkDatabaseConnection() {
 }
 
 app.get('/api/me', (req, res) => {
-  if (!req.oidc.isAuthenticated()) {
-    return res.json({ authenticated: false });
+  if (!isAuthConfigured() || !req.oidc?.isAuthenticated()) {
+    return res.json({ authenticated: false, authConfigured: isAuthConfigured() });
   }
 
   const user = req.oidc.user;
   res.json({
     authenticated: true,
+    authConfigured: true,
     name: user.name || user.nickname || user.email,
     email: user.email,
   });
@@ -88,7 +112,7 @@ app.get('/api/notes', async (_req, res) => {
   res.json({ notes: data ?? [] });
 });
 
-app.post('/api/notes', requiresAuth(), async (req, res) => {
+app.post('/api/notes', requireLogin, async (req, res) => {
   const { name, message } = req.body;
 
   if (!name?.trim() || !message?.trim()) {
@@ -116,8 +140,10 @@ app.post('/api/notes', requiresAuth(), async (req, res) => {
   res.status(201).json({ note: data });
 });
 
-app.listen(PORT, () => {
-  console.log(`Dev Lab is running at http://localhost:${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Dev Lab is running at http://localhost:${PORT}`);
+  });
+}
 
 module.exports = app;

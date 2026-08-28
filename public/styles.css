@@ -161,6 +161,39 @@
   100% { transform: translate(40px, -120px); opacity: 0; }
 }
 
+@keyframes owl-blink {
+  0%, 88%, 100% { transform: scaleY(1); }
+  92% { transform: scaleY(0.1); }
+}
+
+@keyframes owl-wing {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-8deg); }
+}
+
+@keyframes bat-swoop {
+  0% { transform: translate(0, 0) scaleX(1); }
+  49% { transform: translate(-30px, 20px) scaleX(1); }
+  50% { transform: translate(-30px, 20px) scaleX(-1); }
+  100% { transform: translate(0, 0) scaleX(-1); }
+}
+
+@keyframes scroll-unroll {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(-4deg) scale(1.05); }
+}
+
+@keyframes courier-deliver {
+  0% { transform: translateX(0) translateY(0); }
+  40% { transform: translateX(12px) translateY(-8px); }
+  100% { transform: translateX(0) translateY(0); }
+}
+
+@keyframes courier-flap {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(12deg); }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -500,6 +533,23 @@ body {
   color: var(--ink);
   border-bottom: 1px solid var(--gold-dim);
   padding-bottom: 0.75rem;
+  flex: 1;
+}
+
+.scroll-card-header {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.scroll-card-header h2 {
+  flex: 1;
+  margin: 0 0 0.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--gold-dim);
+  width: 100%;
 }
 
 .ornament {
@@ -838,6 +888,82 @@ button.button--working::after {
   align-items: center;
 }
 
+.sprite--owl {
+  width: 52px;
+  height: 52px;
+  top: 12%;
+  right: 8%;
+  animation: sprite-float 4s ease-in-out infinite;
+}
+
+.sprite--owl .sprite-owl-wing--left {
+  transform-origin: 16px 34px;
+  animation: owl-wing 2.5s ease-in-out infinite;
+}
+
+.sprite--owl .sprite-owl-wing--right {
+  transform-origin: 48px 34px;
+  animation: owl-wing 2.5s ease-in-out infinite reverse;
+}
+
+.sprite--owl svg {
+  animation: owl-blink 5s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.sprite--bat {
+  width: 36px;
+  height: 36px;
+  top: 28%;
+  left: 6%;
+  opacity: 0.55;
+  animation: bat-swoop 14s ease-in-out infinite;
+}
+
+.sprite-bat-wing {
+  transform-origin: 16px 14px;
+}
+
+.sprite--scroll {
+  position: relative;
+  width: 36px;
+  height: 42px;
+  flex-shrink: 0;
+  margin-top: -4px;
+  animation: scroll-unroll 3s ease-in-out infinite;
+}
+
+.scroll-card:focus-within .sprite--scroll,
+.scroll-card:hover .sprite--scroll {
+  animation: scroll-unroll 0.8s ease-in-out infinite;
+}
+
+.sprite--courier {
+  position: relative;
+  width: 44px;
+  height: 34px;
+  flex-shrink: 0;
+  margin-top: -2px;
+  animation: sprite-float 3.2s ease-in-out infinite;
+}
+
+.sprite-courier-wing {
+  transform-origin: 32px 22px;
+}
+
+.sprite--courier.sprite--deliver {
+  animation: courier-deliver 0.6s ease-out;
+}
+
+.sprite--courier.sprite--deliver .sprite-courier-wing {
+  animation: courier-flap 0.2s ease-in-out 3;
+}
+
+.scroll-card-header--wall {
+  justify-content: flex-end;
+  flex-direction: row-reverse;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -863,7 +989,9 @@ button.button--working::after {
   }
 
   .sprite--guard,
-  .sprite--key {
+  .sprite--key,
+  .sprite--owl,
+  .sprite--bat {
     display: none;
   }
 

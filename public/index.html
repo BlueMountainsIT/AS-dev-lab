@@ -22,6 +22,25 @@
       <div class="sprite sprite--mote sprite--mote-1"></div>
       <div class="sprite sprite--mote sprite--mote-2"></div>
       <div class="sprite sprite--mote sprite--mote-3"></div>
+      <div id="sprite-owl" class="sprite sprite--owl">
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="32" cy="38" rx="16" ry="18" fill="#5c4f3a" />
+          <circle cx="32" cy="28" r="14" fill="#8a7340" />
+          <circle cx="26" cy="26" r="5" fill="#f3e9d2" />
+          <circle cx="38" cy="26" r="5" fill="#f3e9d2" />
+          <circle cx="26" cy="26" r="2" fill="#2c2416" />
+          <circle cx="38" cy="26" r="2" fill="#2c2416" />
+          <path d="M28 34c2 2 6 2 8 0" stroke="#c4b896" stroke-width="1.5" fill="none" />
+          <path class="sprite-owl-wing sprite-owl-wing--left" d="M16 34c-6-4-8-12-2-16" stroke="#6b5d45" stroke-width="3" fill="none" />
+          <path class="sprite-owl-wing sprite-owl-wing--right" d="M48 34c6-4 8-12 2-16" stroke="#6b5d45" stroke-width="3" fill="none" />
+        </svg>
+      </div>
+      <div class="sprite sprite--bat sprite--bat-1">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <path class="sprite-bat-wing" d="M16 14c-8-2-12 4-10 10 2-4 6-6 10-6 4 0 8 2 10 6 2-6-2-12-10-10z" fill="#3a3558" />
+          <circle cx="16" cy="14" r="2" fill="#e8dcc0" />
+        </svg>
+      </div>
     </div>
 
     <header class="header">
@@ -86,7 +105,18 @@
 
     <main class="container">
       <section class="card scroll-card">
-        <h2><span class="ornament">✦</span> Compose a Missive <span class="ornament">✦</span></h2>
+        <div class="scroll-card-header">
+          <div id="sprite-scroll" class="sprite sprite--scroll">
+            <svg viewBox="0 0 48 56" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 6h28c2 0 4 2 4 4v36c0 2-2 4-4 4H8c-2 0-4-2-4-4V10c0-2 2-4 4-4z" fill="#f3e9d2" stroke="#c4b896" />
+              <path class="sprite-scroll-roll" d="M8 6c-3 0-6 2-6 6v4c0-2 2-4 6-4h28" fill="#e8dcc0" stroke="#c4b896" />
+              <path class="sprite-scroll-roll" d="M36 46c3 0 6 2 6 6v-4c0 2-2 4-6 4H8" fill="#e8dcc0" stroke="#c4b896" />
+              <line x1="14" y1="20" x2="30" y2="20" stroke="#c4b896" stroke-width="1" />
+              <line x1="14" y1="26" x2="30" y2="26" stroke="#c4b896" stroke-width="1" />
+            </svg>
+          </div>
+          <h2><span class="ornament">✦</span> Compose a Missive <span class="ornament">✦</span></h2>
+        </div>
         <p id="auth-notice" class="auth-notice" hidden>
           Thou must <a href="/login">enter the gate</a> before affixing a missive to the wall.
         </p>
@@ -121,7 +151,19 @@
       </section>
 
       <section class="card scroll-card scroll-card--delay">
-        <h2><span class="ornament">✦</span> The Common Wall <span class="ornament">✦</span></h2>
+        <div class="scroll-card-header scroll-card-header--wall">
+          <div id="sprite-courier" class="sprite sprite--courier">
+            <svg viewBox="0 0 64 48" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="32" cy="40" rx="10" ry="3" fill="rgba(44,36,22,0.12)" />
+              <path class="sprite-courier-wing" d="M12 22c8-10 20-12 28-4" stroke="#5c4f3a" stroke-width="2" fill="none" />
+              <path class="sprite-courier-wing" d="M52 22c-8-10-20-12-28-4" stroke="#5c4f3a" stroke-width="2" fill="none" />
+              <ellipse cx="32" cy="24" rx="8" ry="6" fill="#2c2416" />
+              <circle cx="32" cy="20" r="4" fill="#2c2416" />
+              <rect x="26" y="28" width="12" height="8" rx="1" fill="#f3e9d2" stroke="#c4b896" />
+            </svg>
+          </div>
+          <h2><span class="ornament">✦</span> The Common Wall <span class="ornament">✦</span></h2>
+        </div>
         <p id="notes-empty" class="notes-empty">The wall stands bare. Be the first to post a missive.</p>
         <ul id="notes-list" class="notes-list"></ul>
       </section>

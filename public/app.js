@@ -11,6 +11,15 @@ const authNotice = document.getElementById('auth-notice');
 const nameInput = document.getElementById('name');
 const spriteKey = document.getElementById('sprite-key');
 const spriteScribe = document.getElementById('sprite-scribe');
+const spriteCourier = document.getElementById('sprite-courier');
+
+function playCourierDeliver() {
+  if (!spriteCourier) return;
+  spriteCourier.classList.remove('sprite--deliver');
+  void spriteCourier.offsetWidth;
+  spriteCourier.classList.add('sprite--deliver');
+  window.setTimeout(() => spriteCourier.classList.remove('sprite--deliver'), 600);
+}
 
 function setSpriteKeyState(connected) {
   if (!spriteKey) return;
@@ -119,6 +128,10 @@ function renderNotes(notes, animate = false) {
     `;
     notesList.appendChild(item);
   });
+
+  if (animate && notes.length) {
+    playCourierDeliver();
+  }
 }
 
 function escapeHtml(text) {
