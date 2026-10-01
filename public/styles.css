@@ -279,12 +279,12 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  height: min(42vh, 360px);
+  height: min(48vh, 420px);
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
   overflow: hidden;
-  mask-image: linear-gradient(to top, black 55%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to top, black 55%, transparent 100%);
+  mask-image: linear-gradient(to top, black 72%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to top, black 72%, transparent 100%);
 }
 
 .skyline-haze {
@@ -430,7 +430,7 @@ body {
 .container,
 .footer {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 /* ── Header: castle battlement bar ── */
