@@ -9,47 +9,47 @@
   --op-void: #211e28;
   --op-graphite: #2e2a36;
 
-  /* Medieval scriptorium palette */
-  --gold: #d4a853;
-  --gold-light: #f2e2b0;
-  --gold-dim: #9a7b3c;
-  --copper: #c67b4a;
-  --copper-light: #e8a878;
-  --parchment: #f5edd8;
-  --parchment-dark: #e6dcc4;
-  --ink: #2a2218;
-  --ink-muted: #5a4d38;
-  --stone: #12101a;
-  --stone-mid: #1c1824;
-  --burgundy: #6b1e32;
-  --burgundy-deep: #4a1222;
-  --forest: #1a4234;
-  --forest-bright: #2d6b52;
+  /* Twilight guild palette — violet indigo base, champagne gold, soft cyan */
+  --gold: #e4c48a;
+  --gold-light: #f3e6c4;
+  --gold-dim: #a8884a;
+  --copper: #b8956e;
+  --copper-light: #dcc4a0;
+  --parchment: #ebe6f4;
+  --parchment-dark: #d8d0e8;
+  --ink: #16122a;
+  --ink-muted: #4a4460;
+  --stone: #0c0a14;
+  --stone-mid: #141028;
+  --burgundy: #3a2860;
+  --burgundy-deep: #221838;
+  --forest: #1a1848;
+  --forest-bright: #2a2870;
 
-  /* Arcane jade — primary interactive accent */
-  --arcane: #3a9b8f;
-  --arcane-hover: #2f8579;
-  --arcane-deep: #23665c;
-  --arcane-glow: rgba(58, 155, 143, 0.38);
-  --arcane-muted: rgba(58, 155, 143, 0.16);
+  /* Soft cyan — primary interactive accent */
+  --arcane: #62c8e8;
+  --arcane-hover: #4eb0d0;
+  --arcane-deep: #2a7a96;
+  --arcane-glow: rgba(98, 200, 232, 0.42);
+  --arcane-muted: rgba(98, 200, 232, 0.18);
 
-  /* Torch & ember warmth */
-  --ember-core: #ff9f43;
-  --ember-mid: #e86a2a;
-  --ember-halo: rgba(255, 159, 67, 0.22);
-  --mote-teal: rgba(120, 210, 195, 0.75);
+  /* Lantern & starlight warmth */
+  --ember-core: #e8c48a;
+  --ember-mid: #b89458;
+  --ember-halo: rgba(120, 90, 180, 0.28);
+  --mote-teal: rgba(98, 200, 232, 0.78);
 
-  --badge-ok-text: #9ee4b8;
-  --badge-ok-border: #3d8a62;
-  --badge-warn-text: #f5b8c0;
-  --badge-warn-border: #a33d52;
+  --badge-ok-text: #a8e8f4;
+  --badge-ok-border: #3a8a9e;
+  --badge-warn-text: #f0d8a8;
+  --badge-warn-border: #8a6840;
 
   --accent: var(--arcane);
   --accent-hover: var(--arcane-hover);
   --accent-glow: var(--arcane-glow);
   --focus-ring: 0 0 0 3px var(--arcane-glow), 0 0 0 1px var(--gold-light);
   --shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
-  --shadow-parchment: 0 8px 28px rgba(42, 34, 24, 0.28);
+  --shadow-parchment: 0 8px 28px rgba(22, 18, 42, 0.32);
 
   --font-display: 'MedievalSharp', cursive;
   --font-body: 'IM Fell English', Georgia, 'Times New Roman', serif;
@@ -65,8 +65,8 @@
 }
 
 @keyframes seal-pulse {
-  0%, 100% { filter: drop-shadow(0 0 8px rgba(212, 168, 83, 0.45)); transform: scale(1); }
-  50% { filter: drop-shadow(0 0 20px rgba(58, 155, 143, 0.55)); transform: scale(1.04); }
+  0%, 100% { filter: drop-shadow(0 0 8px rgba(228, 196, 138, 0.45)); transform: scale(1); }
+  50% { filter: drop-shadow(0 0 20px rgba(98, 200, 232, 0.55)); transform: scale(1.04); }
 }
 
 @keyframes header-descend {
@@ -228,14 +228,14 @@ body {
   font-size: 1.125rem;
   background:
     radial-gradient(ellipse 45% 55% at 0% 35%, var(--ember-halo), transparent 70%),
-    radial-gradient(ellipse 45% 55% at 100% 35%, rgba(230, 106, 42, 0.14), transparent 70%),
-    radial-gradient(ellipse 50% 35% at 50% 100%, rgba(58, 155, 143, 0.12), transparent 65%),
+    radial-gradient(ellipse 45% 55% at 100% 35%, rgba(100, 72, 160, 0.18), transparent 70%),
+    radial-gradient(ellipse 50% 35% at 50% 100%, rgba(98, 200, 232, 0.14), transparent 65%),
     repeating-linear-gradient(
       90deg,
       transparent,
       transparent 80px,
-      rgba(212, 168, 83, 0.045) 80px,
-      rgba(212, 168, 83, 0.045) 81px
+      rgba(228, 196, 138, 0.04) 80px,
+      rgba(228, 196, 138, 0.04) 81px
     ),
     linear-gradient(165deg, var(--stone-mid) 0%, var(--burgundy-deep) 35%, var(--stone) 62%, var(--op-deep-space) 100%);
   color: var(--parchment);
@@ -261,9 +261,9 @@ body {
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(255, 159, 67, 0.28) 0%,
-    rgba(232, 106, 42, 0.12) 35%,
-    rgba(198, 123, 74, 0.05) 55%,
+    rgba(232, 196, 138, 0.26) 0%,
+    rgba(120, 90, 180, 0.14) 35%,
+    rgba(98, 200, 232, 0.06) 55%,
     transparent 72%
   );
   animation: torch-flicker 3.5s ease-in-out infinite;
@@ -289,10 +289,10 @@ body {
   border-radius: 50%;
   background: var(--gold-light);
   box-shadow:
-    12px -20px 0 rgba(255, 180, 90, 0.65),
-    -8px -35px 0 rgba(232, 106, 42, 0.45),
-    20px -50px 0 rgba(242, 226, 176, 0.25),
-    0 -8px 24px rgba(255, 159, 67, 0.2);
+    12px -20px 0 rgba(243, 230, 196, 0.55),
+    -8px -35px 0 rgba(120, 90, 180, 0.4),
+    20px -50px 0 rgba(98, 200, 232, 0.22),
+    0 -8px 24px rgba(232, 196, 138, 0.18);
   animation: ember-float 4s ease-out infinite;
 }
 
@@ -316,7 +316,7 @@ body {
   gap: 1.5rem;
   padding: 1.5rem 2rem 1.25rem;
   background:
-    linear-gradient(180deg, rgba(28, 24, 36, 0.98) 0%, rgba(18, 16, 26, 0.95) 100%);
+    linear-gradient(180deg, rgba(26, 20, 48, 0.98) 0%, rgba(12, 10, 20, 0.95) 100%);
   border-bottom: 3px double var(--copper);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   position: relative;
@@ -352,7 +352,7 @@ body {
   height: 3.25rem;
   color: var(--op-brand-blue);
   margin-top: 0.2rem;
-  background: radial-gradient(circle, rgba(212, 168, 83, 0.22) 0%, rgba(58, 155, 143, 0.08) 45%, transparent 72%);
+  background: radial-gradient(circle, rgba(228, 196, 138, 0.22) 0%, rgba(98, 200, 232, 0.1) 45%, transparent 72%);
   border-radius: 50%;
   animation: seal-pulse 3s ease-in-out infinite;
 }
@@ -423,8 +423,8 @@ body {
 }
 
 .auth-link--login:hover {
-  background: rgba(58, 155, 143, 0.28);
-  color: #c8f0e8;
+  background: rgba(98, 200, 232, 0.28);
+  color: #c8eef8;
   border-color: var(--gold-dim);
 }
 
@@ -503,14 +503,14 @@ body {
   background: linear-gradient(145deg, var(--forest) 0%, var(--forest-bright) 100%);
   color: var(--badge-ok-text);
   border-color: var(--badge-ok-border);
-  box-shadow: inset 0 0 14px rgba(158, 228, 184, 0.12), 0 0 12px rgba(45, 107, 82, 0.25);
+  box-shadow: inset 0 0 14px rgba(168, 232, 244, 0.14), 0 0 12px rgba(42, 122, 150, 0.28);
 }
 
 .status-badge--disconnected {
   background: linear-gradient(145deg, var(--burgundy-deep) 0%, var(--burgundy) 100%);
   color: var(--badge-warn-text);
   border-color: var(--badge-warn-border);
-  box-shadow: inset 0 0 14px rgba(245, 184, 192, 0.1), 0 0 10px rgba(107, 30, 50, 0.35);
+  box-shadow: inset 0 0 14px rgba(240, 216, 168, 0.12), 0 0 10px rgba(138, 104, 64, 0.32);
 }
 
 .status-badge--stamp {
@@ -846,7 +846,7 @@ button.button--working::after {
   height: 6px;
   border-radius: 50%;
   background: radial-gradient(circle, var(--gold-light) 0%, var(--mote-teal) 55%, transparent 100%);
-  box-shadow: 0 0 8px rgba(255, 159, 67, 0.35);
+  box-shadow: 0 0 8px rgba(98, 200, 232, 0.35);
   animation: mote-drift 8s ease-out infinite;
 }
 
@@ -894,8 +894,8 @@ button.button--working::after {
 }
 
 .sprite--key.sprite--linked {
-  color: #8fd4c8;
-  filter: drop-shadow(0 0 6px rgba(58, 155, 143, 0.55));
+  color: #8fd8f0;
+  filter: drop-shadow(0 0 6px rgba(98, 200, 232, 0.55));
   animation: sprite-key-unlock 2s ease-in-out infinite;
 }
 
