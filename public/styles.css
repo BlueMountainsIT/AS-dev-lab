@@ -222,6 +222,23 @@
   50% { transform: rotate(12deg); }
 }
 
+@keyframes skyline-window-flicker {
+  0%, 100% { opacity: 0.35; }
+  45% { opacity: 1; }
+  48% { opacity: 0.2; }
+  52% { opacity: 0.95; }
+}
+
+@keyframes skyline-beam-sweep {
+  0%, 100% { opacity: 0.25; stroke-dashoffset: 0; }
+  50% { opacity: 0.85; stroke-dashoffset: 24; }
+}
+
+@keyframes skyline-haze-drift {
+  0%, 100% { opacity: 0.55; transform: translateX(0); }
+  50% { opacity: 0.75; transform: translateX(-2%); }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -253,6 +270,102 @@ body {
   color: var(--parchment);
   line-height: 1.55;
   overflow-x: hidden;
+}
+
+/* ── Cyberpunk city skyline (background) ── */
+
+.skyline-layer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: min(42vh, 360px);
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  mask-image: linear-gradient(to top, black 55%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to top, black 55%, transparent 100%);
+}
+
+.skyline-haze {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(255, 43, 214, 0.14), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 20% 90%, rgba(0, 240, 255, 0.1), transparent 65%),
+    radial-gradient(ellipse 50% 35% at 85% 85%, rgba(57, 255, 20, 0.08), transparent 60%);
+  animation: skyline-haze-drift 12s ease-in-out infinite;
+}
+
+.skyline-art,
+.skyline-windows {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: max(100%, 1440px);
+  height: 100%;
+  transform: translateX(-50%);
+  object-fit: cover;
+  object-position: bottom center;
+}
+
+.skyline-windows {
+  mix-blend-mode: screen;
+}
+
+.skyline-window {
+  animation: skyline-window-flicker 4.5s ease-in-out infinite;
+}
+
+.skyline-window--cyan { fill: #7afcff; }
+.skyline-window--magenta { fill: #ff8aed; animation-delay: 0.8s; }
+.skyline-window--green { fill: #39ff14; animation-delay: 1.6s; }
+
+.skyline-window:nth-child(3n) { animation-duration: 3.2s; }
+.skyline-window:nth-child(3n + 1) { animation-duration: 5.1s; }
+.skyline-window:nth-child(3n + 2) { animation-duration: 4s; animation-delay: 2.2s; }
+
+.skyline-beam {
+  fill: none;
+  stroke: rgba(0, 240, 255, 0.55);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 8 12;
+  filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.65));
+  animation: skyline-beam-sweep 6s ease-in-out infinite;
+}
+
+.skyline-beam--alt {
+  stroke: rgba(255, 43, 214, 0.5);
+  filter: drop-shadow(0 0 6px rgba(255, 43, 214, 0.55));
+  animation-delay: 2.5s;
+}
+
+.skyline-reflection {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 28%;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(0, 240, 255, 0.04) 40%,
+    rgba(255, 43, 214, 0.06) 100%
+  );
+  opacity: 0.7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skyline-window,
+  .skyline-beam,
+  .skyline-haze {
+    animation: none;
+  }
+
+  .skyline-window {
+    opacity: 0.65;
+  }
 }
 
 /* ── Ambient torches ── */

@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 360" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+  <defs>
+    <linearGradient id="sky-fade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#040408" stop-opacity="0"/>
+      <stop offset="45%" stop-color="#0a0618" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#040408" stop-opacity="1"/>
+    </linearGradient>
+    <linearGradient id="neon-cyan" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7afcff"/>
+      <stop offset="100%" stop-color="#00f0ff" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="neon-magenta" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ff2bd6"/>
+      <stop offset="100%" stop-color="#ff8aed"/>
+    </linearGradient>
+    <filter id="neon-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1440" height="360" fill="url(#sky-fade)"/>
+
+  <!-- Distant towers -->
+  <g fill="#120828" opacity="0.95">
+    <path d="M0 360V220h40v-80h20v80h35v-120h25v120h30V180h15v180H0z"/>
+    <path d="M120 360V200h55v-40l20-60 20 60v40h50v-90h18v90h42V160h22v200H120z"/>
+    <path d="M380 360V240h30v-70h12v70h28V190h20v-55h14v55h26V210h35v150H380z"/>
+    <path d="M580 360V170h45v-95l28 95v95h38V220h22v140H580z"/>
+    <path d="M780 360V230h50v-110l35 110v110h40V190h28v170H780z"/>
+    <path d="M980 360V210h60v-85h20v85h45V175h30v185H980z"/>
+    <path d="M1180 360V250h35v-60h18v60h40V200h25v-75h16v75h30V220h55v140h-219z"/>
+    <path d="M1320 360V240h70v-130l40 130v130h10V360z"/>
+    <path d="M1440 360H1350V280h90V360z"/>
+  </g>
+
+  <!-- Mid-layer blocks -->
+  <g fill="#080812">
+    <rect x="60" y="260" width="90" height="100"/>
+    <rect x="200" y="220" width="110" height="140"/>
+    <rect x="340" y="270" width="75" height="90"/>
+    <rect x="450" y="200" width="130" height="160"/>
+    <rect x="620" y="250" width="95" height="110"/>
+    <rect x="740" y="215" width="120" height="145"/>
+    <rect x="900" y="265" width="85" height="95"/>
+    <rect x="1020" y="205" width="140" height="155"/>
+    <rect x="1200" y="255" width="100" height="105"/>
+    <rect x="1310" y="285" width="130" height="75"/>
+  </g>
+
+  <!-- Foreground megastructures -->
+  <g fill="#040408" stroke="#1a1038" stroke-width="1">
+    <path d="M0 360V300h160v-45h28v-95h22v95h35v-55h20v55h55V360H0z"/>
+    <path d="M280 360V280h55v-120l30 45v75h40v-90h25v90h50V360H280z"/>
+    <path d="M520 360V310h180v-140l45 140v50h70V360H520z"/>
+    <path d="M850 360V295h145v-165l38 165v65h92V360H850z"/>
+    <path d="M1100 360V320h200v-180l52 180v40h88V360h-540z"/>
+    <path d="M1380 360V330h60v-150h-60V360z"/>
+  </g>
+
+  <!-- Neon rooflines -->
+  <g fill="none" stroke="url(#neon-cyan)" stroke-width="1.5" filter="url(#neon-glow)" opacity="0.85">
+    <path d="M0 255h160M188 235h55M520 310h180M850 295h145M1100 320h200"/>
+    <path d="M120 200h55M580 170h45M780 230h50" stroke="url(#neon-magenta)" opacity="0.7"/>
+  </g>
+
+  <!-- Antenna spires -->
+  <g stroke="#39ff14" stroke-width="1.2" opacity="0.75">
+    <line x1="420" y1="190" x2="420" y2="130"/>
+    <line x1="418" y1="130" x2="422" y2="130"/>
+    <line x1="960" y1="175" x2="960" y2="105"/>
+    <circle cx="960" cy="102" r="2.5" fill="#39ff14"/>
+    <line x1="1240" y1="200" x2="1240" y2="145"/>
+  </g>
+
+  <!-- Window grid hints (static dim) -->
+  <g fill="#00f0ff" opacity="0.08">
+    <rect x="210" y="240" width="4" height="6"/>
+    <rect x="220" y="240" width="4" height="6"/>
+    <rect x="210" y="252" width="4" height="6"/>
+    <rect x="470" y="230" width="4" height="6"/>
+    <rect x="482" y="230" width="4" height="6"/>
+    <rect x="760" y="245" width="4" height="6"/>
+    <rect x="772" y="245" width="4" height="6"/>
+    <rect x="1050" y="235" width="4" height="6"/>
+    <rect x="1062" y="235" width="4" height="6"/>
+    <rect x="1050" y="248" width="4" height="6"/>
+  </g>
+</svg>
