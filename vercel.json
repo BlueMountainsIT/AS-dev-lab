@@ -6,7 +6,13 @@
       "src": "server.js",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": ["public/**"]
+        "includeFiles": [
+          "public/**",
+          "node_modules/express-openid-connect/**",
+          "node_modules/openid-client/**",
+          "node_modules/jose/**",
+          "node_modules/oauth4webapi/**"
+        ]
       }
     }
   ],

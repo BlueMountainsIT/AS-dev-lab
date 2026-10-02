@@ -6,6 +6,16 @@ const express = require('express');
 const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
 
+let openIdConnectModule = null;
+let openIdConnectLoadError = null;
+try {
+  // Top-level require so @vercel/nft includes Auth0 deps in the serverless bundle.
+  openIdConnectModule = require('express-openid-connect');
+} catch (err) {
+  openIdConnectLoadError = err;
+  console.warn('express-openid-connect failed to load — login will be disabled.', err);
+}
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -17,18 +27,27 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const AUTH0_SECRET_MIN_LENGTH = 32;
 
+function getAuthEnv(name) {
+  const raw = process.env[name];
+  if (typeof raw !== 'string') {
+    return undefined;
+  }
+  const trimmed = raw.trim();
+  return trimmed.length ? trimmed : undefined;
+}
+
 function hasAuthEnvVars() {
   return Boolean(
-    process.env.AUTH0_SECRET &&
-      process.env.AUTH0_BASE_URL &&
-      process.env.AUTH0_CLIENT_ID &&
-      process.env.AUTH0_ISSUER_BASE_URL &&
-      process.env.AUTH0_CLIENT_SECRET
+    getAuthEnv('AUTH0_SECRET') &&
+      getAuthEnv('AUTH0_BASE_URL') &&
+      getAuthEnv('AUTH0_CLIENT_ID') &&
+      getAuthEnv('AUTH0_ISSUER_BASE_URL') &&
+      getAuthEnv('AUTH0_CLIENT_SECRET')
   );
 }
 
 function isAuthSecretValid() {
-  const secret = process.env.AUTH0_SECRET;
+  const secret = getAuthEnv('AUTH0_SECRET');
   return typeof secret === 'string' && secret.length >= AUTH0_SECRET_MIN_LENGTH;
 }
 
@@ -37,8 +56,10 @@ function isAuthConfigured() {
 }
 
 function loadOpenIdConnect() {
-  // Lazy-load so a bundler/runtime mismatch does not fail cold start before routes run.
-  return require('express-openid-connect');
+  if (!openIdConnectModule) {
+    throw openIdConnectLoadError || new Error('express-openid-connect is not available');
+  }
+  return openIdConnectModule;
 }
 
 function getSupabaseClient() {
@@ -94,6 +115,7 @@ app.get('/api/notes', async (_req, res) => {
 });
 
 let authMiddlewareEnabled = false;
+let authInitError = null;
 
 if (isAuthConfigured()) {
   try {
@@ -102,11 +124,11 @@ if (isAuthConfigured()) {
       auth({
         authRequired: false,
         auth0Logout: true,
-        secret: process.env.AUTH0_SECRET,
-        baseURL: process.env.AUTH0_BASE_URL,
-        clientID: process.env.AUTH0_CLIENT_ID,
-        issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
-        clientSecret: process.env.AUTH0_CLIENT_SECRET,
+        secret: getAuthEnv('AUTH0_SECRET'),
+        baseURL: getAuthEnv('AUTH0_BASE_URL'),
+        clientID: getAuthEnv('AUTH0_CLIENT_ID'),
+        issuerBaseURL: getAuthEnv('AUTH0_ISSUER_BASE_URL'),
+        clientSecret: getAuthEnv('AUTH0_CLIENT_SECRET'),
         session: {
           rolling: false,
         },
@@ -114,6 +136,7 @@ if (isAuthConfigured()) {
     );
     authMiddlewareEnabled = true;
   } catch (err) {
+    authInitError = err;
     console.warn('Auth0 middleware failed to initialize — login is disabled.', err);
   }
 } else if (hasAuthEnvVars() && !isAuthSecretValid()) {
@@ -139,14 +162,19 @@ function requireLogin(req, res, next) {
 }
 
 app.get('/api/me', (req, res) => {
-  if (!isAuthConfigured() || !req.oidc?.isAuthenticated()) {
-    return res.json({ authenticated: false, authConfigured: isAuthConfigured() });
+  if (!isAuthConfigured() || !authMiddlewareEnabled || !req.oidc?.isAuthenticated()) {
+    return res.json({
+      authenticated: false,
+      authConfigured: isAuthConfigured(),
+      loginAvailable: authMiddlewareEnabled,
+    });
   }
 
   const user = req.oidc.user;
   res.json({
     authenticated: true,
     authConfigured: true,
+    loginAvailable: true,
     name: user.name || user.nickname || user.email,
     email: user.email,
   });
