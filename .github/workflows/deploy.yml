@@ -1,8 +1,9 @@
 name: Deploy to Vercel
 
-# When 1Password Credential Broker is available, replace the env block with
-# the load-secrets-action step using OP_WORKLOAD_ID, OP_ENVIRONMENT_ID,
-# and OP_INTEGRATION_KEY.
+# Deploy credentials are loaded at runtime from a 1Password Environment via
+# Credential Broker (Workload Identity). GitHub stores only OP_INTEGRATION_KEY
+# (org secret) plus OP_WORKLOAD_ID / OP_ENVIRONMENT_ID (vars) — not app secrets.
+# See docs/deploy-1password-github.md.
 
 on:
   push:
@@ -12,20 +13,23 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
-    env:
-      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-      SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-      AUTH0_SECRET: ${{ secrets.AUTH0_SECRET }}
-      AUTH0_BASE_URL: ${{ secrets.AUTH0_BASE_URL }}
-      AUTH0_ISSUER_BASE_URL: ${{ secrets.AUTH0_ISSUER_BASE_URL }}
-      AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
-      AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Load secrets from 1Password
+        uses: 1password/load-secrets-action@v5
+        with:
+          export-env: true
+        env:
+          OP_WORKLOAD_ID: ${{ vars.OP_WORKLOAD_ID }}
+          OP_ENVIRONMENT_ID: ${{ vars.OP_ENVIRONMENT_ID }}
+          OP_INTEGRATION_KEY: ${{ secrets.OP_INTEGRATION_KEY }}
+
       - name: Verify required secrets
         run: |
           required=(
@@ -47,13 +51,12 @@ jobs:
             fi
           done
           if [ "${#missing[@]}" -gt 0 ]; then
-            echo "::error::Deploy aborted: missing required GitHub Actions secret(s): ${missing[*]}"
-            echo "Add them at https://github.com/BlueMountainsIT/AS-dev-lab/settings/secrets/actions (see docs/vercel-github-secrets.md)."
+            echo "::error::Deploy aborted: missing required variable(s) in shell env after 1Password load: ${missing[*]}"
+            echo "Configure the 1Password Environment (same names as .env.example) and connect BlueMountainsIT GitHub org via Credential Broker."
+            echo "In GitHub, set only OP_INTEGRATION_KEY (organization secret) and OP_WORKLOAD_ID / OP_ENVIRONMENT_ID (repository or org variables) — NOT plaintext app secrets."
+            echo "See docs/deploy-1password-github.md and https://www.1password.dev/brokered-access/github-actions"
             exit 1
           fi
-
-      - name: Checkout code
-        uses: actions/checkout@v4
 
       - name: Install dependencies
         run: npm ci
