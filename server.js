@@ -55,6 +55,30 @@ function isAuthConfigured() {
   return hasAuthEnvVars() && isAuthSecretValid();
 }
 
+function resolveAuth0BaseUrl() {
+  const configured = getAuthEnv('AUTH0_BASE_URL');
+  if (!configured) {
+    return configured;
+  }
+
+  const isLocalhost =
+    /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?\/?$/i.test(configured) ||
+    configured.startsWith('http://localhost') ||
+    configured.startsWith('http://127.0.0.1');
+
+  if (process.env.VERCEL && isLocalhost) {
+    const host =
+      process.env.VERCEL_PROJECT_PRODUCTION_URL ||
+      process.env.VERCEL_URL ||
+      process.env.VERCEL_BRANCH_URL;
+    if (host) {
+      return `https://${host.replace(/^https?:\/\//, '').replace(/\/$/, '')}`;
+    }
+  }
+
+  return configured.replace(/\/$/, '');
+}
+
 function loadOpenIdConnect() {
   if (!openIdConnectModule) {
     throw openIdConnectLoadError || new Error('express-openid-connect is not available');
@@ -125,7 +149,7 @@ if (isAuthConfigured()) {
         authRequired: false,
         auth0Logout: true,
         secret: getAuthEnv('AUTH0_SECRET'),
-        baseURL: getAuthEnv('AUTH0_BASE_URL'),
+        baseURL: resolveAuth0BaseUrl(),
         clientID: getAuthEnv('AUTH0_CLIENT_ID'),
         issuerBaseURL: getAuthEnv('AUTH0_ISSUER_BASE_URL'),
         clientSecret: getAuthEnv('AUTH0_CLIENT_SECRET'),
