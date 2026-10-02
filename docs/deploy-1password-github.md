@@ -12,6 +12,10 @@ The **Deploy to Vercel** workflow (`.github/workflows/deploy.yml`) runs on every
 
 Official reference: [Use 1Password Credential Broker to access secrets in GitHub Actions](https://www.1password.dev/brokered-access/github-actions).
 
+## Team workflow: Mac push to `main` (recommended)
+
+Agents commit to `cursor/<short-topic>` on the cloud VM; **do not** push `main` from the cloud for normal app changes. A developer on a Mac fetches, merges, and `git push origin main` (1Password SSH), which triggers this deploy workflow. Step-by-step commands, the 1Password prompt, and why cloud pushes to `main` bypass Mac SSH: **[workflow-mac-1p-push-broker-deploy.md](./workflow-mac-1p-push-broker-deploy.md)**.
+
 ## What admins configure (one-time)
 
 ### Connect GitHub to 1Password
