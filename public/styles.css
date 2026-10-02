@@ -239,6 +239,30 @@
   50% { opacity: 0.75; transform: translateX(-2%); }
 }
 
+@keyframes neon-sign-flicker {
+  0%, 100% { opacity: 1; text-shadow: 0 0 8px var(--copper), 0 0 18px var(--gold); }
+  92% { opacity: 1; }
+  93% { opacity: 0.4; }
+  94% { opacity: 1; }
+  96% { opacity: 0.65; }
+  97% { opacity: 1; }
+}
+
+@keyframes neon-pulse-glow {
+  0%, 100% { opacity: 0.55; filter: blur(0); }
+  50% { opacity: 1; filter: blur(1px); }
+}
+
+@keyframes scanline-drift {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes neon-pipe-hum {
+  0%, 100% { box-shadow: 0 0 12px rgba(0, 240, 255, 0.35), inset 0 0 8px rgba(255, 43, 214, 0.2); }
+  50% { box-shadow: 0 0 22px rgba(57, 255, 20, 0.45), inset 0 0 14px rgba(0, 240, 255, 0.35); }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -341,6 +365,13 @@ body {
   animation-delay: 2.5s;
 }
 
+.skyline-beam--green {
+  stroke: rgba(57, 255, 20, 0.55);
+  filter: drop-shadow(0 0 8px rgba(57, 255, 20, 0.6));
+  animation-delay: 4s;
+  animation-duration: 5.5s;
+}
+
 .skyline-reflection {
   position: absolute;
   left: 0;
@@ -366,6 +397,83 @@ body {
   .skyline-window {
     opacity: 0.65;
   }
+}
+
+/* ── Neon overlay (pipes, horizon, scanline) ── */
+
+.neon-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.neon-horizon {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: min(48vh, 420px);
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--neon-green) 15%,
+    var(--copper) 35%,
+    var(--gold-light) 50%,
+    var(--copper) 65%,
+    var(--neon-green) 85%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 16px rgba(0, 240, 255, 0.65),
+    0 0 32px rgba(255, 43, 214, 0.35),
+    0 0 48px rgba(57, 255, 20, 0.25);
+  animation: neon-pulse-glow 4s ease-in-out infinite;
+  opacity: 0.75;
+}
+
+.neon-scanline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(0, 240, 255, 0.03) 45%,
+    rgba(255, 43, 214, 0.05) 55%,
+    transparent 100%
+  );
+  animation: scanline-drift 14s linear infinite;
+  opacity: 0.35;
+}
+
+.neon-pipe {
+  position: absolute;
+  top: 12%;
+  bottom: 18%;
+  width: 3px;
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    var(--gold) 12%,
+    var(--copper) 50%,
+    var(--neon-green) 88%,
+    transparent 100%
+  );
+  animation: neon-pipe-hum 3.2s ease-in-out infinite;
+}
+
+.neon-pipe--left {
+  left: max(8px, calc(50% - 420px));
+  animation-delay: 0.4s;
+}
+
+.neon-pipe--right {
+  right: max(8px, calc(50% - 420px));
+  animation-delay: 1.6s;
 }
 
 /* ── Ambient torches ── */
@@ -522,6 +630,19 @@ body {
   max-width: 30rem;
 }
 
+.neon-sign {
+  margin: 0.65rem 0 0;
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.neon-sign__text {
+  color: var(--copper-light);
+  animation: neon-sign-flicker 5s ease-in-out infinite;
+}
+
 .header-actions {
   display: flex;
   flex-direction: column;
@@ -658,6 +779,7 @@ body {
 /* ── Layout ── */
 
 .container {
+  position: relative;
   max-width: 760px;
   margin: 0 auto;
   padding: 2rem 1rem 1.5rem;
@@ -682,6 +804,23 @@ body {
 
 .scroll-card--delay {
   animation-delay: 0.18s;
+}
+
+.scroll-card--neon {
+  box-shadow:
+    var(--shadow-parchment),
+    var(--shadow),
+    inset 0 0 48px rgba(255, 43, 214, 0.06),
+    0 0 0 1px rgba(57, 255, 20, 0.15),
+    -8px 0 24px rgba(0, 240, 255, 0.08),
+    8px 0 24px rgba(255, 43, 214, 0.1);
+}
+
+.scroll-card--neon::before,
+.scroll-card--neon::after {
+  color: var(--copper-light);
+  text-shadow: 0 0 8px var(--copper), 0 0 14px var(--gold);
+  opacity: 0.95;
 }
 
 .scroll-card::before,
@@ -998,6 +1137,9 @@ button.button--working::after {
 .sprite--mote-1 { left: 15%; bottom: 20%; animation-delay: 0s; }
 .sprite--mote-2 { left: 72%; bottom: 30%; animation-delay: 2.5s; }
 .sprite--mote-3 { left: 48%; bottom: 10%; animation-delay: 5s; }
+.sprite--mote-4 { left: 88%; bottom: 45%; animation-delay: 1.2s; width: 8px; height: 8px; }
+.sprite--mote-5 { left: 6%; bottom: 55%; animation-delay: 3.8s; background: radial-gradient(circle, var(--copper-light) 0%, var(--gold) 55%, transparent 100%); }
+.sprite--mote-6 { left: 58%; bottom: 38%; animation-delay: 6.5s; width: 5px; height: 5px; box-shadow: 0 0 14px rgba(255, 43, 214, 0.65); }
 
 .sprite--guard {
   width: 42px;
@@ -1173,6 +1315,10 @@ button.button--working::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .neon-scanline {
+    display: none;
   }
 }
 
