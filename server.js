@@ -10,7 +10,9 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-function isAuthConfigured() {
+const AUTH0_SECRET_MIN_LENGTH = 32;
+
+function hasAuthEnvVars() {
   return Boolean(
     process.env.AUTH0_SECRET &&
       process.env.AUTH0_BASE_URL &&
@@ -20,20 +22,44 @@ function isAuthConfigured() {
   );
 }
 
+function isAuthSecretValid() {
+  const secret = process.env.AUTH0_SECRET;
+  return typeof secret === 'string' && secret.length >= AUTH0_SECRET_MIN_LENGTH;
+}
+
+function isAuthConfigured() {
+  return hasAuthEnvVars() && isAuthSecretValid();
+}
+
+let authMiddlewareEnabled = false;
+
 if (isAuthConfigured()) {
-  app.use(
-    auth({
-      authRequired: false,
-      auth0Logout: true,
-      secret: process.env.AUTH0_SECRET,
-      baseURL: process.env.AUTH0_BASE_URL,
-      clientID: process.env.AUTH0_CLIENT_ID,
-      issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
-      clientSecret: process.env.AUTH0_CLIENT_SECRET,
-    })
+  try {
+    app.use(
+      auth({
+        authRequired: false,
+        auth0Logout: true,
+        secret: process.env.AUTH0_SECRET,
+        baseURL: process.env.AUTH0_BASE_URL,
+        clientID: process.env.AUTH0_CLIENT_ID,
+        issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
+        clientSecret: process.env.AUTH0_CLIENT_SECRET,
+      })
+    );
+    authMiddlewareEnabled = true;
+  } catch (err) {
+    console.warn('Auth0 middleware failed to initialize — login is disabled.', err);
+  }
+} else if (hasAuthEnvVars() && !isAuthSecretValid()) {
+  console.warn(
+    `AUTH0_SECRET must be at least ${AUTH0_SECRET_MIN_LENGTH} characters — login is disabled.`
   );
-} else {
-  console.warn('Auth0 is not configured — the page will load, but login is disabled.');
+}
+
+if (!authMiddlewareEnabled) {
+  if (!hasAuthEnvVars()) {
+    console.warn('Auth0 is not configured — the page will load, but login is disabled.');
+  }
   app.get('/login', (_req, res) => res.redirect('/'));
   app.get('/logout', (_req, res) => res.redirect('/'));
 }
