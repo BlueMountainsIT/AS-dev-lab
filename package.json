@@ -17,6 +17,6 @@
     "@supabase/supabase-js": "^2.49.1",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "express-openid-connect": "^3.2.0"
+    "express-openid-connect": "^2.17.1"
   }
 }
