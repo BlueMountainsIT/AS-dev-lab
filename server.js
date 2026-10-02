@@ -4,7 +4,6 @@ if (!process.env.VERCEL) {
 
 const express = require('express');
 const path = require('path');
-const { auth, requiresAuth } = require('express-openid-connect');
 const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
@@ -37,6 +36,11 @@ function isAuthConfigured() {
   return hasAuthEnvVars() && isAuthSecretValid();
 }
 
+function loadOpenIdConnect() {
+  // Lazy-load so a bundler/runtime mismatch does not fail cold start before routes run.
+  return require('express-openid-connect');
+}
+
 function getSupabaseClient() {
   const url = process.env.SUPABASE_URL;
   const anonKey = process.env.SUPABASE_ANON_KEY;
@@ -64,7 +68,7 @@ async function checkDatabaseConnection() {
   return { connected: true, message: 'Connected' };
 }
 
-// Public routes (registered before Auth0 so health and static assets never depend on session middleware).
+// Public routes (registered before Auth0 so health checks never depend on session middleware).
 app.get('/api/status', async (_req, res) => {
   const status = await checkDatabaseConnection();
   res.json(status);
@@ -91,11 +95,9 @@ app.get('/api/notes', async (_req, res) => {
 
 let authMiddlewareEnabled = false;
 
-// Auth0 session middleware can fail on misconfigured serverless; skip on Vercel until proxy/session is verified.
-const shouldMountAuth = isAuthConfigured() && process.env.VERCEL !== '1';
-
-if (shouldMountAuth) {
+if (isAuthConfigured()) {
   try {
+    const { auth } = loadOpenIdConnect();
     app.use(
       auth({
         authRequired: false,
@@ -129,9 +131,10 @@ if (!authMiddlewareEnabled) {
 }
 
 function requireLogin(req, res, next) {
-  if (!isAuthConfigured()) {
+  if (!isAuthConfigured() || !authMiddlewareEnabled) {
     return res.status(503).json({ error: 'Auth0 is not configured. Login is unavailable.' });
   }
+  const { requiresAuth } = loadOpenIdConnect();
   return requiresAuth()(req, res, next);
 }
 
