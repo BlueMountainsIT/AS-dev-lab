@@ -1,4 +1,6 @@
-require('dotenv').config();
+if (!process.env.VERCEL) {
+  require('dotenv').config();
+}
 
 const express = require('express');
 const path = require('path');
@@ -89,7 +91,10 @@ app.get('/api/notes', async (_req, res) => {
 
 let authMiddlewareEnabled = false;
 
-if (isAuthConfigured()) {
+// Auth0 session middleware can fail on misconfigured serverless; skip on Vercel until proxy/session is verified.
+const shouldMountAuth = isAuthConfigured() && process.env.VERCEL !== '1';
+
+if (shouldMountAuth) {
   try {
     app.use(
       auth({
