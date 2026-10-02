@@ -8,7 +8,11 @@ const { createClient } = require('@supabase/supabase-js');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Vercel (and other reverse proxies) terminate TLS; Auth0 cookies need correct secure/proto.
+app.set('trust proxy', 1);
+
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
 
 const AUTH0_SECRET_MIN_LENGTH = 32;
 
@@ -30,48 +34,6 @@ function isAuthSecretValid() {
 function isAuthConfigured() {
   return hasAuthEnvVars() && isAuthSecretValid();
 }
-
-let authMiddlewareEnabled = false;
-
-if (isAuthConfigured()) {
-  try {
-    app.use(
-      auth({
-        authRequired: false,
-        auth0Logout: true,
-        secret: process.env.AUTH0_SECRET,
-        baseURL: process.env.AUTH0_BASE_URL,
-        clientID: process.env.AUTH0_CLIENT_ID,
-        issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
-        clientSecret: process.env.AUTH0_CLIENT_SECRET,
-      })
-    );
-    authMiddlewareEnabled = true;
-  } catch (err) {
-    console.warn('Auth0 middleware failed to initialize — login is disabled.', err);
-  }
-} else if (hasAuthEnvVars() && !isAuthSecretValid()) {
-  console.warn(
-    `AUTH0_SECRET must be at least ${AUTH0_SECRET_MIN_LENGTH} characters — login is disabled.`
-  );
-}
-
-if (!authMiddlewareEnabled) {
-  if (!hasAuthEnvVars()) {
-    console.warn('Auth0 is not configured — the page will load, but login is disabled.');
-  }
-  app.get('/login', (_req, res) => res.redirect('/'));
-  app.get('/logout', (_req, res) => res.redirect('/'));
-}
-
-function requireLogin(req, res, next) {
-  if (!isAuthConfigured()) {
-    return res.status(503).json({ error: 'Auth0 is not configured. Login is unavailable.' });
-  }
-  return requiresAuth()(req, res, next);
-}
-
-app.use(express.static(path.join(__dirname, 'public')));
 
 function getSupabaseClient() {
   const url = process.env.SUPABASE_URL;
@@ -100,20 +62,7 @@ async function checkDatabaseConnection() {
   return { connected: true, message: 'Connected' };
 }
 
-app.get('/api/me', (req, res) => {
-  if (!isAuthConfigured() || !req.oidc?.isAuthenticated()) {
-    return res.json({ authenticated: false, authConfigured: isAuthConfigured() });
-  }
-
-  const user = req.oidc.user;
-  res.json({
-    authenticated: true,
-    authConfigured: true,
-    name: user.name || user.nickname || user.email,
-    email: user.email,
-  });
-});
-
+// Public routes (registered before Auth0 so health and static assets never depend on session middleware).
 app.get('/api/status', async (_req, res) => {
   const status = await checkDatabaseConnection();
   res.json(status);
@@ -136,6 +85,63 @@ app.get('/api/notes', async (_req, res) => {
   }
 
   res.json({ notes: data ?? [] });
+});
+
+let authMiddlewareEnabled = false;
+
+if (isAuthConfigured()) {
+  try {
+    app.use(
+      auth({
+        authRequired: false,
+        auth0Logout: true,
+        secret: process.env.AUTH0_SECRET,
+        baseURL: process.env.AUTH0_BASE_URL,
+        clientID: process.env.AUTH0_CLIENT_ID,
+        issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
+        clientSecret: process.env.AUTH0_CLIENT_SECRET,
+        session: {
+          rolling: false,
+        },
+      })
+    );
+    authMiddlewareEnabled = true;
+  } catch (err) {
+    console.warn('Auth0 middleware failed to initialize — login is disabled.', err);
+  }
+} else if (hasAuthEnvVars() && !isAuthSecretValid()) {
+  console.warn(
+    `AUTH0_SECRET must be at least ${AUTH0_SECRET_MIN_LENGTH} characters — login is disabled.`
+  );
+}
+
+if (!authMiddlewareEnabled) {
+  if (!hasAuthEnvVars()) {
+    console.warn('Auth0 is not configured — the page will load, but login is disabled.');
+  }
+  app.get('/login', (_req, res) => res.redirect('/'));
+  app.get('/logout', (_req, res) => res.redirect('/'));
+}
+
+function requireLogin(req, res, next) {
+  if (!isAuthConfigured()) {
+    return res.status(503).json({ error: 'Auth0 is not configured. Login is unavailable.' });
+  }
+  return requiresAuth()(req, res, next);
+}
+
+app.get('/api/me', (req, res) => {
+  if (!isAuthConfigured() || !req.oidc?.isAuthenticated()) {
+    return res.json({ authenticated: false, authConfigured: isAuthConfigured() });
+  }
+
+  const user = req.oidc.user;
+  res.json({
+    authenticated: true,
+    authConfigured: true,
+    name: user.name || user.nickname || user.email,
+    email: user.email,
+  });
 });
 
 app.post('/api/notes', requireLogin, async (req, res) => {
@@ -164,6 +170,23 @@ app.post('/api/notes', requireLogin, async (req, res) => {
   }
 
   res.status(201).json({ note: data });
+});
+
+app.use((err, req, res, _next) => {
+  console.error('Unhandled Express error:', {
+    message: err?.message,
+    stack: err?.stack,
+    method: req.method,
+    path: req.path,
+  });
+
+  if (res.headersSent) {
+    return;
+  }
+
+  res.status(err.status || err.statusCode || 500).json({
+    error: 'Internal server error',
+  });
 });
 
 if (require.main === module) {
