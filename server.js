@@ -167,6 +167,9 @@ app.get('/api/me', (req, res) => {
       authenticated: false,
       authConfigured: isAuthConfigured(),
       loginAvailable: authMiddlewareEnabled,
+      openIdLoaded: Boolean(openIdConnectModule),
+      authLoadError: openIdConnectLoadError?.message,
+      authInitError: authInitError?.message,
     });
   }
 
