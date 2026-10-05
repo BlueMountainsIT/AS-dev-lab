@@ -418,15 +418,18 @@ body {
   pointer-events: none;
   z-index: 0;
   overflow: hidden;
-  mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 85%);
-  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 85%);
+  mix-blend-mode: screen;
+  opacity: 0.92;
+  mask-image: linear-gradient(to bottom, black 0%, black 62%, transparent 92%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 62%, transparent 92%);
 }
 
 .neon-cloud {
   position: absolute;
-  width: 200px;
-  height: 72px;
-  animation: neon-cloud-drift 36s ease-in-out infinite, neon-cloud-pulse 8s ease-in-out infinite;
+  width: 260px;
+  height: 92px;
+  animation: neon-cloud-drift 36s ease-in-out infinite, neon-cloud-pulse 6s ease-in-out infinite;
+  filter: drop-shadow(0 0 24px rgba(255, 255, 255, 0.12));
 }
 
 .neon-cloud i {
@@ -436,56 +439,79 @@ body {
 }
 
 .neon-cloud i:nth-child(1) {
-  width: 56px;
-  height: 56px;
+  width: 68px;
+  height: 68px;
   left: 0;
-  top: 18px;
+  top: 20px;
 }
 
 .neon-cloud i:nth-child(2) {
-  width: 72px;
-  height: 72px;
-  left: 38px;
+  width: 88px;
+  height: 88px;
+  left: 46px;
   top: 0;
 }
 
 .neon-cloud i:nth-child(3) {
-  width: 64px;
-  height: 64px;
-  left: 88px;
-  top: 12px;
+  width: 78px;
+  height: 78px;
+  left: 108px;
+  top: 14px;
 }
 
 .neon-cloud i:nth-child(4) {
-  width: 48px;
-  height: 48px;
-  left: 132px;
-  top: 22px;
+  width: 58px;
+  height: 58px;
+  left: 168px;
+  top: 26px;
 }
 
 .neon-cloud--cyan i {
-  background: radial-gradient(circle at 35% 35%, rgba(122, 252, 255, 0.95), rgba(0, 240, 255, 0.35) 55%, transparent 72%);
-  box-shadow: 0 0 28px rgba(0, 240, 255, 0.55), 0 0 48px rgba(0, 240, 255, 0.25);
+  background: radial-gradient(circle at 32% 32%, #e8ffff 0%, rgba(122, 252, 255, 0.95) 28%, rgba(0, 240, 255, 0.55) 58%, transparent 82%);
+  box-shadow:
+    0 0 20px rgba(0, 240, 255, 0.95),
+    0 0 40px rgba(0, 240, 255, 0.65),
+    0 0 72px rgba(0, 240, 255, 0.35),
+    inset 0 0 18px rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(122, 252, 255, 0.45);
 }
 
 .neon-cloud--magenta i {
-  background: radial-gradient(circle at 35% 35%, rgba(255, 138, 237, 0.95), rgba(255, 43, 214, 0.35) 55%, transparent 72%);
-  box-shadow: 0 0 28px rgba(255, 43, 214, 0.55), 0 0 48px rgba(255, 43, 214, 0.22);
+  background: radial-gradient(circle at 32% 32%, #ffe8fb 0%, rgba(255, 138, 237, 0.95) 28%, rgba(255, 43, 214, 0.55) 58%, transparent 82%);
+  box-shadow:
+    0 0 20px rgba(255, 43, 214, 0.95),
+    0 0 40px rgba(255, 43, 214, 0.65),
+    0 0 72px rgba(255, 43, 214, 0.32),
+    inset 0 0 18px rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 138, 237, 0.45);
 }
 
 .neon-cloud--green i {
-  background: radial-gradient(circle at 35% 35%, rgba(120, 255, 100, 0.9), rgba(57, 255, 20, 0.32) 55%, transparent 72%);
-  box-shadow: 0 0 28px rgba(57, 255, 20, 0.5), 0 0 44px rgba(57, 255, 20, 0.2);
+  background: radial-gradient(circle at 32% 32%, #eaffea 0%, rgba(120, 255, 100, 0.95) 28%, rgba(57, 255, 20, 0.52) 58%, transparent 82%);
+  box-shadow:
+    0 0 20px rgba(57, 255, 20, 0.9),
+    0 0 40px rgba(57, 255, 20, 0.6),
+    0 0 68px rgba(57, 255, 20, 0.3),
+    inset 0 0 18px rgba(255, 255, 255, 0.28);
+  border: 1px solid rgba(120, 255, 100, 0.4);
 }
 
 .neon-cloud--blend i:nth-child(odd) {
-  background: radial-gradient(circle at 40% 40%, rgba(122, 252, 255, 0.85), rgba(255, 43, 214, 0.28) 60%, transparent 75%);
-  box-shadow: 0 0 32px rgba(0, 240, 255, 0.4), 0 0 40px rgba(255, 43, 214, 0.25);
+  background: radial-gradient(circle at 38% 38%, #f0ffff 0%, rgba(122, 252, 255, 0.9) 30%, rgba(255, 43, 214, 0.45) 62%, transparent 84%);
+  box-shadow:
+    0 0 22px rgba(0, 240, 255, 0.75),
+    0 0 48px rgba(255, 43, 214, 0.45),
+    inset 0 0 16px rgba(255, 255, 255, 0.32);
+  border: 1px solid rgba(200, 180, 255, 0.35);
 }
 
 .neon-cloud--blend i:nth-child(even) {
-  background: radial-gradient(circle at 40% 40%, rgba(255, 138, 237, 0.8), rgba(57, 255, 20, 0.25) 58%, transparent 75%);
-  box-shadow: 0 0 30px rgba(255, 43, 214, 0.35), 0 0 36px rgba(57, 255, 20, 0.22);
+  background: radial-gradient(circle at 38% 38%, #ffe8ff 0%, rgba(255, 138, 237, 0.88) 30%, rgba(57, 255, 20, 0.42) 60%, transparent 84%);
+  box-shadow:
+    0 0 22px rgba(255, 43, 214, 0.7),
+    0 0 44px rgba(57, 255, 20, 0.38),
+    inset 0 0 16px rgba(255, 255, 255, 0.28);
+  border: 1px solid rgba(255, 180, 240, 0.35);
 }
 
 .neon-cloud--a {
@@ -497,7 +523,7 @@ body {
 .neon-cloud--b {
   top: 14%;
   right: 6%;
-  width: 240px;
+  width: 300px;
   animation-duration: 38s, 7s;
   animation-delay: -6s, -2s;
 }
@@ -505,8 +531,8 @@ body {
 .neon-cloud--c {
   top: 22%;
   left: 38%;
-  width: 180px;
-  height: 64px;
+  width: 228px;
+  height: 82px;
   animation-duration: 44s, 10s;
   animation-delay: -12s, -4s;
 }
@@ -514,8 +540,8 @@ body {
 .neon-cloud--d {
   top: 5%;
   left: 52%;
-  width: 220px;
-  opacity: 0.85;
+  width: 280px;
+  opacity: 1;
   animation-duration: 50s, 11s;
   animation-delay: -20s, -1s;
 }
