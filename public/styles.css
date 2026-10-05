@@ -270,8 +270,8 @@
 }
 
 @keyframes neon-cloud-pulse {
-  0%, 100% { opacity: 0.42; filter: blur(22px); }
-  50% { opacity: 0.62; filter: blur(26px); }
+  0%, 100% { opacity: 0.78; filter: blur(14px) brightness(1.05); }
+  50% { opacity: 1; filter: blur(10px) brightness(1.25); }
 }
 
 * {
@@ -1444,7 +1444,8 @@ button.button--working::after {
 
   .neon-cloud {
     animation: none;
-    opacity: 0.45;
+    opacity: 0.72;
+    filter: blur(12px);
   }
 }
 
