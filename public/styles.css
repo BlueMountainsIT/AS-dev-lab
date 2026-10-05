@@ -263,6 +263,17 @@
   50% { box-shadow: 0 0 22px rgba(57, 255, 20, 0.45), inset 0 0 14px rgba(0, 240, 255, 0.35); }
 }
 
+@keyframes neon-cloud-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(28px, -8px) scale(1.04); }
+  66% { transform: translate(-18px, 6px) scale(0.98); }
+}
+
+@keyframes neon-cloud-pulse {
+  0%, 100% { opacity: 0.42; filter: blur(22px); }
+  50% { opacity: 0.62; filter: blur(26px); }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -397,6 +408,116 @@ body {
   .skyline-window {
     opacity: 0.65;
   }
+}
+
+/* ── Neon clouds (upper sky) ── */
+
+.neon-clouds {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 85%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 85%);
+}
+
+.neon-cloud {
+  position: absolute;
+  width: 200px;
+  height: 72px;
+  animation: neon-cloud-drift 36s ease-in-out infinite, neon-cloud-pulse 8s ease-in-out infinite;
+}
+
+.neon-cloud i {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+}
+
+.neon-cloud i:nth-child(1) {
+  width: 56px;
+  height: 56px;
+  left: 0;
+  top: 18px;
+}
+
+.neon-cloud i:nth-child(2) {
+  width: 72px;
+  height: 72px;
+  left: 38px;
+  top: 0;
+}
+
+.neon-cloud i:nth-child(3) {
+  width: 64px;
+  height: 64px;
+  left: 88px;
+  top: 12px;
+}
+
+.neon-cloud i:nth-child(4) {
+  width: 48px;
+  height: 48px;
+  left: 132px;
+  top: 22px;
+}
+
+.neon-cloud--cyan i {
+  background: radial-gradient(circle at 35% 35%, rgba(122, 252, 255, 0.95), rgba(0, 240, 255, 0.35) 55%, transparent 72%);
+  box-shadow: 0 0 28px rgba(0, 240, 255, 0.55), 0 0 48px rgba(0, 240, 255, 0.25);
+}
+
+.neon-cloud--magenta i {
+  background: radial-gradient(circle at 35% 35%, rgba(255, 138, 237, 0.95), rgba(255, 43, 214, 0.35) 55%, transparent 72%);
+  box-shadow: 0 0 28px rgba(255, 43, 214, 0.55), 0 0 48px rgba(255, 43, 214, 0.22);
+}
+
+.neon-cloud--green i {
+  background: radial-gradient(circle at 35% 35%, rgba(120, 255, 100, 0.9), rgba(57, 255, 20, 0.32) 55%, transparent 72%);
+  box-shadow: 0 0 28px rgba(57, 255, 20, 0.5), 0 0 44px rgba(57, 255, 20, 0.2);
+}
+
+.neon-cloud--blend i:nth-child(odd) {
+  background: radial-gradient(circle at 40% 40%, rgba(122, 252, 255, 0.85), rgba(255, 43, 214, 0.28) 60%, transparent 75%);
+  box-shadow: 0 0 32px rgba(0, 240, 255, 0.4), 0 0 40px rgba(255, 43, 214, 0.25);
+}
+
+.neon-cloud--blend i:nth-child(even) {
+  background: radial-gradient(circle at 40% 40%, rgba(255, 138, 237, 0.8), rgba(57, 255, 20, 0.25) 58%, transparent 75%);
+  box-shadow: 0 0 30px rgba(255, 43, 214, 0.35), 0 0 36px rgba(57, 255, 20, 0.22);
+}
+
+.neon-cloud--a {
+  top: 8%;
+  left: -4%;
+  animation-duration: 42s, 9s;
+}
+
+.neon-cloud--b {
+  top: 14%;
+  right: 6%;
+  width: 240px;
+  animation-duration: 38s, 7s;
+  animation-delay: -6s, -2s;
+}
+
+.neon-cloud--c {
+  top: 22%;
+  left: 38%;
+  width: 180px;
+  height: 64px;
+  animation-duration: 44s, 10s;
+  animation-delay: -12s, -4s;
+}
+
+.neon-cloud--d {
+  top: 5%;
+  left: 52%;
+  width: 220px;
+  opacity: 0.85;
+  animation-duration: 50s, 11s;
+  animation-delay: -20s, -1s;
 }
 
 /* ── Neon overlay (pipes, horizon, scanline) ── */
@@ -1319,6 +1440,11 @@ button.button--working::after {
 
   .neon-scanline {
     display: none;
+  }
+
+  .neon-cloud {
+    animation: none;
+    opacity: 0.45;
   }
 }
 
