@@ -206,6 +206,28 @@
   100% { transform: translate(0, 0) scaleX(-1); }
 }
 
+@keyframes firefly-orbit {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.85; }
+  25% { transform: translate(24px, -28px) scale(1.1); opacity: 1; }
+  50% { transform: translate(12px, -48px) scale(0.95); opacity: 0.7; }
+  75% { transform: translate(-16px, -20px) scale(1.05); opacity: 0.95; }
+}
+
+@keyframes raven-glide {
+  0%, 100% { transform: translate(0, 0) rotate(-2deg); }
+  50% { transform: translate(48px, -22px) rotate(4deg); }
+}
+
+@keyframes lock-spirit-drift {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-14px) rotate(-8deg); }
+}
+
+@keyframes firefly-wing {
+  0%, 100% { transform: scaleX(1); opacity: 0.75; }
+  50% { transform: scaleX(0.35); opacity: 1; }
+}
+
 @keyframes scroll-unroll {
   0%, 100% { transform: rotate(0deg) scale(1); }
   50% { transform: rotate(-4deg) scale(1.05); }
@@ -1415,6 +1437,88 @@ button.button--working::after {
   transform-origin: 16px 14px;
 }
 
+.sprite--bat-2 {
+  top: 20%;
+  right: 14%;
+  width: 28px;
+  height: 28px;
+  opacity: 0.45;
+  animation: bat-swoop 18s ease-in-out infinite;
+  animation-delay: -9s;
+}
+
+.sprite--firefly {
+  width: 26px;
+  height: 26px;
+  filter: drop-shadow(0 0 8px rgba(57, 255, 20, 0.75)) drop-shadow(0 0 14px rgba(0, 240, 255, 0.45));
+}
+
+.sprite--firefly-1 {
+  top: 42%;
+  left: 18%;
+  animation: firefly-orbit 11s ease-in-out infinite;
+}
+
+.sprite--firefly-2 {
+  top: 36%;
+  right: 20%;
+  animation: firefly-orbit 13s ease-in-out infinite reverse;
+  animation-delay: -4s;
+}
+
+.sprite-firefly-wing {
+  transform-origin: 12px 13px;
+  animation: firefly-wing 0.25s ease-in-out infinite;
+}
+
+.sprite-firefly-wing--right {
+  animation-delay: 0.12s;
+}
+
+.sprite--raven {
+  width: 44px;
+  height: 30px;
+  top: 30%;
+  right: 24%;
+  opacity: 0.6;
+  animation: raven-glide 20s ease-in-out infinite;
+}
+
+.sprite-raven-wing {
+  transform-origin: 18px 16px;
+  animation: owl-wing 1.8s ease-in-out infinite;
+}
+
+.sprite--lock-spirit {
+  width: 34px;
+  height: 34px;
+  bottom: 34%;
+  left: 10%;
+  color: var(--copper-light);
+  animation: lock-spirit-drift 4.2s ease-in-out infinite;
+  filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.65)) drop-shadow(0 0 18px rgba(255, 43, 214, 0.35));
+}
+
+.sprite-lock-shackle {
+  transform-origin: 16px 8px;
+  animation: sprite-key-unlock 3s ease-in-out infinite;
+}
+
+.sprite--moth {
+  width: 38px;
+  height: 38px;
+  bottom: 48%;
+  right: 10%;
+  opacity: 0.5;
+  animation: sprite-float 3.8s ease-in-out infinite, firefly-orbit 16s ease-in-out infinite;
+  animation-delay: 0s, -6s;
+}
+
+.sprite-moth-wing {
+  transform-origin: 20px 20px;
+  animation: firefly-wing 0.4s ease-in-out infinite;
+}
+
 .sprite--scroll {
   position: relative;
   width: 36px;
@@ -1492,7 +1596,10 @@ button.button--working::after {
   .sprite--guard,
   .sprite--key,
   .sprite--owl,
-  .sprite--bat {
+  .sprite--bat,
+  .sprite--raven,
+  .sprite--lock-spirit,
+  .sprite--moth {
     display: none;
   }
 
