@@ -228,6 +228,23 @@
   50% { transform: scaleX(0.35); opacity: 1; }
 }
 
+@keyframes jelly-pulse {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-10px) scale(1.06); }
+}
+
+@keyframes wyrm-slither {
+  0%, 100% { transform: translateX(0) rotate(-3deg); }
+  50% { transform: translateX(36px) rotate(5deg); }
+}
+
+@keyframes comet-streak {
+  0% { transform: translate(0, 0) rotate(-24deg); opacity: 0; }
+  8% { opacity: 0.85; }
+  45% { transform: translate(-220px, 120px) rotate(-24deg); opacity: 0; }
+  100% { transform: translate(-220px, 120px) rotate(-24deg); opacity: 0; }
+}
+
 @keyframes scroll-unroll {
   0%, 100% { transform: rotate(0deg) scale(1); }
   50% { transform: rotate(-4deg) scale(1.05); }
@@ -1519,6 +1536,69 @@ button.button--working::after {
   animation: firefly-wing 0.4s ease-in-out infinite;
 }
 
+.sprite--firefly-3 {
+  top: 52%;
+  left: 42%;
+  animation: firefly-orbit 9s ease-in-out infinite;
+  animation-delay: -2s;
+}
+
+.sprite--jelly {
+  width: 42px;
+  height: 50px;
+  top: 16%;
+  left: 4%;
+  opacity: 0.65;
+  filter: drop-shadow(0 0 14px rgba(0, 240, 255, 0.55));
+  animation: jelly-pulse 5s ease-in-out infinite;
+}
+
+.sprite-jelly-tentacle {
+  transform-origin: 20px 24px;
+  animation: firefly-wing 1.2s ease-in-out infinite;
+}
+
+.sprite-jelly-tentacle:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.sprite-jelly-tentacle:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.sprite--wyrm {
+  width: 56px;
+  height: 24px;
+  bottom: 42%;
+  right: 6%;
+  opacity: 0.55;
+  animation: wyrm-slither 14s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px rgba(255, 43, 214, 0.45));
+}
+
+.sprite--cat {
+  width: 46px;
+  height: 38px;
+  bottom: 28%;
+  left: 22%;
+  opacity: 0.6;
+  animation: sprite-float 4.5s ease-in-out infinite;
+}
+
+.sprite-cat-tail {
+  transform-origin: 34px 26px;
+  animation: owl-wing 2.2s ease-in-out infinite reverse;
+}
+
+.sprite--comet {
+  width: 64px;
+  height: 16px;
+  top: 10%;
+  right: -8%;
+  opacity: 0.8;
+  animation: comet-streak 18s ease-in-out infinite;
+}
+
 .sprite--scroll {
   position: relative;
   width: 36px;
@@ -1599,7 +1679,11 @@ button.button--working::after {
   .sprite--bat,
   .sprite--raven,
   .sprite--lock-spirit,
-  .sprite--moth {
+  .sprite--moth,
+  .sprite--jelly,
+  .sprite--wyrm,
+  .sprite--cat,
+  .sprite--comet {
     display: none;
   }
 
