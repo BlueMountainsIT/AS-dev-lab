@@ -245,6 +245,27 @@
   100% { transform: translate(-220px, 120px) rotate(-24deg); opacity: 0; }
 }
 
+@keyframes ghost-wobble {
+  0%, 100% { transform: translateY(0) scaleX(1); opacity: 0.5; }
+  50% { transform: translateY(-16px) scaleX(1.08); opacity: 0.75; }
+}
+
+@keyframes beetle-scuttle {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(14px, -6px) rotate(8deg); }
+  75% { transform: translate(-10px, 4px) rotate(-6deg); }
+}
+
+@keyframes rune-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes hawk-soar {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-40px, -28px); }
+}
+
 @keyframes scroll-unroll {
   0%, 100% { transform: rotate(0deg) scale(1); }
   50% { transform: rotate(-4deg) scale(1.05); }
@@ -1599,6 +1620,73 @@ button.button--working::after {
   animation: comet-streak 18s ease-in-out infinite;
 }
 
+.sprite--ghost {
+  width: 36px;
+  height: 44px;
+  top: 48%;
+  right: 8%;
+  filter: drop-shadow(0 0 16px rgba(122, 252, 255, 0.5));
+  animation: ghost-wobble 6s ease-in-out infinite;
+}
+
+.sprite--beetle {
+  width: 36px;
+  height: 28px;
+  bottom: 22%;
+  right: 28%;
+  opacity: 0.55;
+  animation: beetle-scuttle 8s ease-in-out infinite;
+}
+
+.sprite-beetle-wing {
+  transform-origin: 18px 10px;
+  animation: firefly-wing 0.35s ease-in-out infinite;
+}
+
+.sprite-beetle-leg {
+  transform-origin: 18px 18px;
+  animation: firefly-wing 0.5s ease-in-out infinite reverse;
+}
+
+.sprite--rune {
+  width: 32px;
+  height: 32px;
+  top: 24%;
+  left: 12%;
+  opacity: 0.55;
+  animation: rune-spin 24s linear infinite;
+  filter: drop-shadow(0 0 12px rgba(255, 43, 214, 0.45));
+}
+
+.sprite--hawk {
+  width: 48px;
+  height: 32px;
+  top: 6%;
+  left: 28%;
+  opacity: 0.5;
+  animation: hawk-soar 16s ease-in-out infinite;
+}
+
+.sprite-hawk-wing {
+  transform-origin: 24px 14px;
+  animation: owl-wing 1.4s ease-in-out infinite;
+}
+
+.sprite--mote-7 {
+  left: 32%;
+  bottom: 62%;
+  animation-delay: 2.2s;
+  width: 7px;
+  height: 7px;
+}
+
+.sprite--mote-8 {
+  left: 78%;
+  bottom: 18%;
+  animation-delay: 4.6s;
+  background: radial-gradient(circle, #39ff14 0%, var(--copper-light) 50%, transparent 100%);
+}
+
 .sprite--scroll {
   position: relative;
   width: 36px;
@@ -1683,7 +1771,11 @@ button.button--working::after {
   .sprite--jelly,
   .sprite--wyrm,
   .sprite--cat,
-  .sprite--comet {
+  .sprite--comet,
+  .sprite--ghost,
+  .sprite--beetle,
+  .sprite--rune,
+  .sprite--hawk {
     display: none;
   }
 
