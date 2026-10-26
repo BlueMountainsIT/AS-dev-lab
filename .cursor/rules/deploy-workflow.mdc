@@ -1,0 +1,13 @@
+---
+description: Git branch and Mac 1Password SSH deploy workflow
+alwaysApply: true
+---
+
+# Deploy workflow
+
+Read `AGENTS.md` and `docs/workflow-mac-1p-push-broker-deploy.md`.
+
+- Implement on `cursor/<short-topic>`; do not commit app changes on `main`.
+- Push the feature branch to `origin`; never push `main` from the agent.
+- Use SSH remote `git@github.com:BlueMountainsIT/AS-dev-lab.git`.
+- Tell the user the branch name and the Mac merge + `git push origin main` steps (1Password SSH → GitHub Actions → Vercel).
